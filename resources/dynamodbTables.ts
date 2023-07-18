@@ -39,7 +39,24 @@ const ConversationsTable = {
   }
 }
 
+// const MessagesTable = {
+//   Type: "AWS::DynamoDB::Table",
+//   Properties: {
+//     TableName: '${self:provider.environment.MESSAGES_TABLE}',
+//     AttributeDefinitions: [{
+//       AttributeName: "id",
+//       AttributeType: "N",
+//     }],
+//     KeySchema: [{
+//       AttributeName: "id",
+//       KeyType: "HASH"
+//     }],
+//     ProvisionedThroughput    
+//   }
+// }
+
 export default {
     ContactsTable,
-    ConversationsTable
+    ConversationsTable,
+    // MessagesTable
   }

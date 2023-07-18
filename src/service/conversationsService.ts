@@ -1,5 +1,4 @@
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
-
 import { GetConversations } from "../model/Conversations";
 import { PostConversations } from "../model/Conversations";
 
@@ -9,13 +8,6 @@ export default class conversationsService {
 
     constructor(private docClient: DocumentClient) { }
 
-    async getAllConversations(): Promise<GetConversations[]> {
-        const conversations = await this.docClient.scan({
-            TableName: this.Tablename,
-        }).promise()
-        return conversations.Items as GetConversations[];
-    }
-
     async createConversation (conversation: PostConversations): Promise<PostConversations> {
         await this.docClient.put({
             TableName: this.Tablename,
@@ -24,5 +16,22 @@ export default class conversationsService {
         return conversation as PostConversations;
     }
 
+    async getAllConversations(): Promise<GetConversations[]> {
+        const conversations = await this.docClient.scan({
+            TableName: this.Tablename,
+            // ProjectionExpression: "title, senderName, lastMessage"
+        }).promise()
+        return conversations.Items as GetConversations[];
+    }
 
+    async getConversationById(id: number): Promise<GetConversations> {
+        const conversation = await this.docClient.get({
+            TableName: this.Tablename,
+            Key: {
+                id
+            }
+        }).promise()
+        return conversation.Item as GetConversations;
+    }
+    
 }

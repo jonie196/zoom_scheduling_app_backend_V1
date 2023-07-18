@@ -1,12 +1,12 @@
 import { handlerPath } from '@libs/handler-resolver';
 
-export const getAllConversations = {
-    handler: `${handlerPath(__dirname)}/handler.getAllConversations`,
+export const getMessageById = {
+    handler: `${handlerPath(__dirname)}/handler.getMessageById`,
     events: [
         {
             http: {
                 method: 'get',
-                path: 'conversations',
+                path: 'conversations/{id}/messages/{messageId}',
                 cors: {
                     origin: '*',
                     headers: [
@@ -19,32 +19,32 @@ export const getAllConversations = {
     ],
 };
 
-export const createConversation = {
-    handler: `${handlerPath(__dirname)}/handler.createConversation`,
+export const getMessages = {
+    handler: `${handlerPath(__dirname)}/handler.getMessages`,
+    events: [
+        {
+            http: {
+                method: 'get',
+                path: 'conversations/{id}/messages',
+                cors: {
+                    origin: '*',
+                    headers: [
+                        'Content-Type',
+                        'x-access-token',
+                    ],
+                }
+            },
+        },
+    ],
+};
+
+export const createMessage = {
+    handler: `${handlerPath(__dirname)}/handler.createMessage`,
     events: [
         {
             http: {
                 method: 'post',
-                path: 'conversations',
-                cors: {
-                    origin: '*',
-                    headers: [
-                        'Content-Type',
-                        'x-access-token',
-                    ],
-                }
-            },
-        },
-    ],
-};
-
-export const getConversationById = {
-    handler: `${handlerPath(__dirname)}/handler.getConversationById`,
-    events: [
-        {
-            http: {
-                method: 'get',
-                path: 'conversations/{id}',
+                path: 'conversations/{id}/messages',
                 cors: {
                     origin: '*',
                     headers: [

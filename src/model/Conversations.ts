@@ -8,6 +8,7 @@ interface PostConversations {
     id: number;
     title: string;
     participants: string[];
+    messages: string[];
     createdAt: string;
 }
 

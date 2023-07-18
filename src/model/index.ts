@@ -4,8 +4,8 @@ import { DocumentClient } from "aws-sdk/clients/dynamodb";
 const dynamoDBClient = (): DocumentClient => {
   if (process.env.IS_OFFLINE) {
     return new AWS.DynamoDB.DocumentClient({
-      region: "localhost",
-      endpoint: "http://localhost:4000",
+      region: "eu-west-3",
+      endpoint: "http://localhost:8000",
     });
   }
 

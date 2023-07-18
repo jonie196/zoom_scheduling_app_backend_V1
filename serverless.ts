@@ -1,7 +1,8 @@
 import type { AWS } from '@serverless/typescript';
 import dynamoDbTables from './resources/dynamodbTables';
 import { getAllContacts } from '@functions/contacts/index';
-import { getAllConversations, createConversation } from '@functions/conversations/index';
+import { getAllConversations, createConversation, getConversationById} from '@functions/conversations/index';
+import { getMessages, createMessage, getMessageById } from '@functions/messages/index';
 
 const serverlessConfiguration: AWS = {
   service: 'zoom-scheduling-app-backend',
@@ -12,7 +13,7 @@ const serverlessConfiguration: AWS = {
     runtime: 'nodejs14.x',
     region: 'eu-west-3',
     stage: 'dev',
-    profile: "personal", // change to your aws profile
+    // profile: 'test', // change to your aws profile
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
@@ -22,6 +23,7 @@ const serverlessConfiguration: AWS = {
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
       CONTACTS_TABLE: '${self:service}-contacts-table-${sls:stage}',
       CONVERSATIONS_TABLE: '${self:service}-conversations-table-${sls:stage}',
+      // MESSAGES_TABLE: '${self:service}-messages-table-${sls:stage}',
     },
     // iam: {
     //   role: {
@@ -45,14 +47,14 @@ const serverlessConfiguration: AWS = {
         managedPolicies: [
           // "arn:aws:iam::463468586193:policy/basic-InvokeFunction",
           // "arn:aws:iam::463468586193:policy/LambdaDynamoDB",
-          "arn:aws:iam::aws:policy/AdministratorAccess"
-
+          "arn:aws:iam::463468586193:policy/basic-InvokeFunction",
+          "arn:aws:iam::463468586193:policy/DynamoDBPolicy"
         ]
       }
     },
   },
   // import the function via paths
-  functions: { getAllContacts, getAllConversations, createConversation },
+  functions: { getAllContacts, getAllConversations, createConversation, getConversationById, getMessages, createMessage, getMessageById},
   package: { individually: true },
   custom: {
     esbuild: {
