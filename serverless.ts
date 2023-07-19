@@ -7,13 +7,14 @@ import { getMessages, createMessage, getMessageById } from '@functions/messages/
 const serverlessConfiguration: AWS = {
   service: 'zoom-scheduling-app-backend',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild', 'serverless-offline', 'serverless-dynamodb-local'],
+  plugins: ['serverless-esbuild', 'serverless-offline', 'serverless-dynamodb-local', "serverless-dotenv-plugin",
+],
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
     region: 'eu-west-3',
     stage: 'dev',
-    // profile: 'test', // change to your aws profile
+    profile: 'personal', // change to your aws profile
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,

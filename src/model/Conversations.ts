@@ -1,4 +1,6 @@
 interface GetConversations {
+    id: any;
+    messages: any;
     title: string;
     senderName: string;
     lastMessage: string;
