@@ -2,13 +2,19 @@ import { DocumentClient } from "aws-sdk/clients/dynamodb";
 import { GetConversations } from "../model/Conversations";
 import { PostConversations } from "../model/Conversations";
 
+interface ConversationsResponse {
+    currentPage: number;
+    totalPages: number;
+    conversations: GetConversations[];
+}
+
 export default class conversationsService {
 
     private Tablename: string = process.env.CONVERSATIONS_TABLE;
 
     constructor(private docClient: DocumentClient) { }
 
-    async createConversation (conversation: PostConversations): Promise<PostConversations> {
+    async createConversation(conversation: PostConversations): Promise<PostConversations> {
         await this.docClient.put({
             TableName: this.Tablename,
             Item: conversation
@@ -16,12 +22,29 @@ export default class conversationsService {
         return conversation as PostConversations;
     }
 
-    async getAllConversations(): Promise<GetConversations[]> {
+    async getAllConversations(page: number): Promise<ConversationsResponse> {
         const conversations = await this.docClient.scan({
             TableName: this.Tablename,
-            // ProjectionExpression: "title, senderName, lastMessage"
-        }).promise()
-        return conversations.Items as GetConversations[];
+        }).promise();
+
+        const startIndex = (page - 1) * 10;
+
+        const endIndex = page * 10;
+
+        let conversationsForPage = conversations.Items as GetConversations[]
+        if (page !== 0) {
+            conversationsForPage = conversations.Items.slice(startIndex, endIndex) as GetConversations[];
+        }
+
+        const totalPages = Math.ceil(conversations.Items.length / 10);
+
+        const data: ConversationsResponse = {
+            currentPage: page,
+            totalPages: totalPages,
+            conversations: conversationsForPage,
+        };
+
+        return data;
     }
 
     async getConversationById(id: number): Promise<GetConversations> {
@@ -33,5 +56,5 @@ export default class conversationsService {
         }).promise()
         return conversation.Item as GetConversations;
     }
-    
+
 }

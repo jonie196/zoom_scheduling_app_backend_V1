@@ -13,7 +13,14 @@ export const getAllConversations = {
                         'Content-Type',
                         'x-access-token',
                     ],
-                }
+                },
+                request: {
+                    parameters: {
+                        querystrings: {
+                            page: true,
+                        },
+                    },
+                },
             },
         },
     ],

@@ -32,7 +32,14 @@ export const getMessages = {
                         'Content-Type',
                         'x-access-token',
                     ],
-                }
+                },
+                request: {
+                    parameters: {
+                        querystrings: {
+                            page: true,
+                        },
+                    },
+                },
             },
         },
     ],
