@@ -1,12 +1,5 @@
 const ProvisionedThroughput = { ReadCapacityUnits: 1, WriteCapacityUnits: 1 }
 
-// CONTACTS TABLE
-
-// ATTRUBUTES:     
-      // id: string; (primary key)
-      // name: string;
-
-
 const ContactsTable = {
   Type: "AWS::DynamoDB::Table",
   Properties: {
@@ -19,7 +12,7 @@ const ContactsTable = {
       AttributeName: "id",
       KeyType: "HASH"
     }],
-    ProvisionedThroughput    
+    ProvisionedThroughput
   }
 }
 
@@ -35,28 +28,11 @@ const ConversationsTable = {
       AttributeName: "id",
       KeyType: "HASH"
     }],
-    ProvisionedThroughput    
+    ProvisionedThroughput
   }
 }
 
-// const MessagesTable = {
-//   Type: "AWS::DynamoDB::Table",
-//   Properties: {
-//     TableName: '${self:provider.environment.MESSAGES_TABLE}',
-//     AttributeDefinitions: [{
-//       AttributeName: "id",
-//       AttributeType: "N",
-//     }],
-//     KeySchema: [{
-//       AttributeName: "id",
-//       KeyType: "HASH"
-//     }],
-//     ProvisionedThroughput    
-//   }
-// }
-
 export default {
-    ContactsTable,
-    ConversationsTable,
-    // MessagesTable
-  }
+  ContactsTable,
+  ConversationsTable,
+}

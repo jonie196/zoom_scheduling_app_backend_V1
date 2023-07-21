@@ -35,13 +35,11 @@ export const getMessageById = middyfy(async (event: APIGatewayProxyEvent): Promi
 export const getMessages = middyfy(async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
         const page = event.queryStringParameters?.page ? parseInt(event.queryStringParameters.page, 10) : 1;
-        const conversation = await messagesService.getMessages(parseInt(event.pathParameters.id),page);
+        const conversation = await messagesService.getMessages(parseInt(event.pathParameters.id), page);
         const contactsData = await contactsService.getAllContacts(0);
         const messages = conversation.messages
         const messagesData = messages.map((message) => {
             const senderName = contactsData.contacts.find((item) => item.id === message.senderId)?.name;
-            // const lastMessage = conversation.messages.length > 0 ? conversation.messages[conversation.messages.length - 1] : null;
-            // const senderName = lastMessage ? contacts.find((item) => item.id === lastMessage.senderId)?.name : null;
             return {
                 content: message.content,
                 senderName: senderName,

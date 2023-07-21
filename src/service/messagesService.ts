@@ -50,24 +50,6 @@ export default class messagesService {
         return data;
     }
 
-    // async createMessage(id: number, message: PostMessages): Promise<PostMessages> {
-    //     await this.docClient.put({
-    //         TableName: this.TableName,
-    //         Item: message
-    //     }).promise()
-    //     return message as PostMessages;
-    // }
-
-    // async createMessage(id: number, message: PostMessages): Promise<PostMessages> {
-    //     const conversation = await this.getMessageById(id);
-    //     conversation.messages.push(message);
-    //     await this.docClient.put({
-    //         TableName: this.TableName,
-    //         Item: conversation
-    //     }).promise()
-    //     return message as PostMessages;
-    // }
-
     async createMessage(id: number, message: PostMessages): Promise<PostMessages> {
         const updateParams = {
             TableName: this.TableName,
@@ -76,10 +58,10 @@ export default class messagesService {
             },
             UpdateExpression: 'SET #attrName = list_append(#attrName, :newMessage)',
             ExpressionAttributeNames: {
-                '#attrName': 'messages' // Replace 'messages' with the actual array attribute name in your table
+                '#attrName': 'messages'
             },
             ExpressionAttributeValues: {
-                ':newMessage': [message] // Wrap the new message in an array to append it to the existing messages array
+                ':newMessage': [message]
             },
             ReturnValues: 'ALL_NEW'
         };
@@ -87,6 +69,4 @@ export default class messagesService {
         await this.docClient.update(updateParams).promise();
         return message as PostMessages;
     }
-
-
 }

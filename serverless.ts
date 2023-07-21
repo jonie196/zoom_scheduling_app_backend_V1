@@ -1,20 +1,21 @@
 import type { AWS } from '@serverless/typescript';
 import dynamoDbTables from './resources/dynamodbTables';
 import { getAllContacts } from '@functions/contacts/index';
-import { getAllConversations, createConversation, getConversationById} from '@functions/conversations/index';
+import { getAllConversations, createConversation, getConversationById } from '@functions/conversations/index';
 import { getMessages, createMessage, getMessageById } from '@functions/messages/index';
+
 
 const serverlessConfiguration: AWS = {
   service: 'zoom-scheduling-app-backend',
   frameworkVersion: '3',
   plugins: ['serverless-esbuild', 'serverless-offline', 'serverless-dynamodb-local', "serverless-dotenv-plugin",
-],
+  ],
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
     region: 'eu-west-3',
     stage: 'dev',
-    profile: 'personal', // change to your aws profile
+    profile: 'dev', // change to your aws profile
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
@@ -24,30 +25,10 @@ const serverlessConfiguration: AWS = {
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
       CONTACTS_TABLE: '${self:service}-contacts-table-${sls:stage}',
       CONVERSATIONS_TABLE: '${self:service}-conversations-table-${sls:stage}',
-      // MESSAGES_TABLE: '${self:service}-messages-table-${sls:stage}',
     },
-    // iam: {
-    //   role: {
-    //     statements: [{
-    //       Effect: "Allow",
-    //       Action: [
-    //         "dynamodb:DescribeTable",
-    //         "dynamodb:Query",
-    //         "dynamodb:Scan",
-    //         "dynamodb:GetItem",
-    //         "dynamodb:PutItem",
-    //         "dynamodb:UpdateItem",
-    //         "dynamodb:DeleteItem",
-    //       ],
-    //       Resource: "arn:aws:dynamodb:eu-west-3:*:table/ContactsTable",
-    //     }],
-    //   },
-    // },
     iam: {
       role: {
         managedPolicies: [
-          // "arn:aws:iam::463468586193:policy/basic-InvokeFunction",
-          // "arn:aws:iam::463468586193:policy/LambdaDynamoDB",
           "arn:aws:iam::463468586193:policy/basic-InvokeFunction",
           "arn:aws:iam::463468586193:policy/DynamoDBPolicy"
         ]
@@ -55,7 +36,7 @@ const serverlessConfiguration: AWS = {
     },
   },
   // import the function via paths
-  functions: { getAllContacts, getAllConversations, createConversation, getConversationById, getMessages, createMessage, getMessageById},
+  functions: { getAllContacts, getAllConversations, createConversation, getConversationById, getMessages, createMessage, getMessageById },
   package: { individually: true },
   custom: {
     esbuild: {
